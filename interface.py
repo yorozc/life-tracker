@@ -5,11 +5,20 @@ class userInterface:
     def __init__(self): 
         self._tasks = []
 
+    def mainInterface(self):
+        pass
+
     def createTask(self):
-        name = input("Please input name of task: ")
-        description = input("(Optional) Please input description: ")
-        newTask = Task(name, description)
-        self.addTasks(newTask)
+        try:
+            name = input("Please input name of task: ")
+            if not name:
+                raise ValueError("Name cannot be empty")
+            description = input("(Optional) Please input description: ")
+            newTask = Task(name, description)
+            self.addTasks(newTask)
+            
+        except ValueError as e:
+            print("Error:", e)
 
     def addTasks(self, task):
         self._tasks.append(task)
@@ -20,6 +29,9 @@ class userInterface:
         else:
             for task in self._tasks:
                 print(task.printTask())
+
+    def completeTask(self):
+        pass
 
     
 
