@@ -9,7 +9,7 @@ class Task:
         self._date = date.today()
 
     def __repr__(self):
-        return f"Task {self._name}"    
+        return f"Task name: {self._name}, Description: {self._desc}, Completion status: {self._checked}, added: {self._date}"    
 
     @property
     def getName(self): #getter

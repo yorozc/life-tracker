@@ -1,7 +1,8 @@
 from task import Task
 
 def main():
-    pass
+    newTask = Task("Workout", "")
+    print(newTask)
 
 if __name__=="__main__":
     main()
