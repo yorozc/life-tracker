@@ -2,7 +2,7 @@ from datetime import date
 
 class Task:
 
-    def __init__(self, name, desc):
+    def __init__(self, name, desc=""):
         self._name = name
         self._desc = desc
         self._checked = False
@@ -34,4 +34,11 @@ class Task:
     @getChecked.setter
     def setCheched(self, checked):
         self._checked = checked
+
+    @property
+    def getDate(self):
+        return self._date
+    
+    def printTask(self):
+        return f"[] {self._name} {self._date}"
     

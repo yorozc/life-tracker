@@ -1,8 +1,9 @@
-from task import Task
+from interface import userInterface
 
 def main():
-    newTask = Task("Workout", "")
-    print(newTask)
+    user = userInterface()
+    user.createTask()
+    user.printTasks()
 
 if __name__=="__main__":
     main()
