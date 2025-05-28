@@ -2,11 +2,14 @@ from datetime import date
 
 class Task:
 
-    def __init__(self, name, desc, checked):
+    def __init__(self, name, desc):
         self._name = name
         self._desc = desc
-        self._checked = checked
+        self._checked = False
         self._date = date.today()
+
+    def __repr__(self):
+        return f"Task {self._name}"    
 
     @property
     def getName(self): #getter
@@ -16,5 +19,19 @@ class Task:
     def setName(self, name):
         self._name = name
 
-        
+    @property
+    def getDesc(self): 
+        return self._desc
+
+    @getDesc.setter
+    def setDesc(self, desc):
+        self._desc = desc
+    
+    @property
+    def getChecked(self):
+        return self._checked
+
+    @getChecked.setter
+    def setCheched(self, checked):
+        self._checked = checked
     
