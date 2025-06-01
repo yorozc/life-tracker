@@ -7,13 +7,17 @@ class userInterface:
 
     def mainInterface(self):
         while(True):
+            print("=============================================================================")
             self.printTasks()
             choice = input("What operation would you like to do:\n" \
             "1. Add Task\n" \
             "2. Delete Task\n" \
             "3. Edit Task\n" \
-            "4. Complete Task\n")
+            "4. Complete Task\n" \
+            "5. Print Tasks\n" \
+            "6. Quit app\n")
             self.choice(choice)
+            print("=============================================================================")
 
     def choice(self, choice):
         match choice:
@@ -25,6 +29,10 @@ class userInterface:
                 self.editTasks()
             case "4":
                 self.completeTask()
+            case "5":
+                self.printTasks()
+            case "6":
+                exit()
 
     def createTask(self):
         try:
@@ -49,7 +57,16 @@ class userInterface:
                 print(task.printTask())
 
     def completeTask(self):
-        pass
+        completedTask = input("Type name of task that is completed: ")
+        completedTask = completedTask.lower()
+        completedTask = completedTask.replace(" ", "")
+        print(completedTask)
+
+        for task in self._tasks:
+            individualTask = task.getName.lower()
+            individualTask = individualTask.replace(" ", "")
+            if completedTask == individualTask:
+                task.setPrintTask() #flips switch that marks task as completed
 
     def deleteTasks(self):
         pass

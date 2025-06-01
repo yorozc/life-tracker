@@ -42,5 +42,12 @@ class Task:
         return self._date
     
     def printTask(self):
-        return f"[] {self._name} {self._date}"
+        if self._checked:
+           return f"[x] {self._name} {self._date}" 
+        else:
+            return f"[] {self._name} {self._date}"
+    
+    def setPrintTask(self):
+        self._checked = True
+        
     
