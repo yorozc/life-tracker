@@ -6,7 +6,13 @@ class userInterface:
         self._tasks = []
 
     def mainInterface(self):
-        pass
+        while(True):
+            choice = input("What operation would you like to do:\n" \
+            "1. Add Task\n" \
+            "2. Delete Task\n" \
+            "3. Edit Task\n" \
+            "4. Complete Task\n")
+            self.createTask()
 
     def createTask(self):
         try:
