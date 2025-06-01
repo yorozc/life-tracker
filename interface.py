@@ -7,12 +7,24 @@ class userInterface:
 
     def mainInterface(self):
         while(True):
+            self.printTasks()
             choice = input("What operation would you like to do:\n" \
             "1. Add Task\n" \
             "2. Delete Task\n" \
             "3. Edit Task\n" \
             "4. Complete Task\n")
-            self.createTask()
+            self.choice(choice)
+
+    def choice(self, choice):
+        match choice:
+            case "1":
+                self.createTask()
+            case "2":
+                self.deleteTasks()
+            case "3":
+                self.editTasks()
+            case "4":
+                self.completeTask()
 
     def createTask(self):
         try:
@@ -38,6 +50,12 @@ class userInterface:
 
     def completeTask(self):
         pass
+
+    def deleteTasks(self):
+        pass
+
+    def editTasks(self):
+        pass    
 
     
 

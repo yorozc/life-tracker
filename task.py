@@ -1,8 +1,10 @@
 from datetime import date
+import uuid
 
 class Task:
 
     def __init__(self, name, desc=""):
+        self.id = uuid.uuid4()
         self._name = name
         self._desc = desc
         self._checked = False
