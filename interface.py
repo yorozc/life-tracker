@@ -57,16 +57,20 @@ class userInterface:
                 print(task.printTask())
             print("***********************************************")
 
-    def completeTask(self):
-        completedTask = input("Type name of task that is completed: ").lower()
-        completedTask = completedTask.replace(" ", "")
-        print(completedTask)
-
+    def findTask(self, taskToFind):
+        taskToReturn = None
         for task in self._tasks:
-            individualTask = task.getName.lower()
-            individualTask = individualTask.replace(" ", "")
-            if completedTask == individualTask:
-                task.setPrintTask() #flips switch that marks task as completed
+            newTask = task.getName.lower().replace(" ", "")
+            if taskToFind == newTask:
+                taskToReturn = task
+                return True, taskToReturn
+
+    def completeTask(self):
+        completedTask = input("Type name of task that is completed: ").lower().replace(" ", "")
+
+        res, task = self.findTask(completedTask)
+        if res:
+            task.setPrintTask()
 
     def deleteTasks(self):
         try:
@@ -79,13 +83,13 @@ class userInterface:
                     individualTask = individualTask.replace(" ", "")
 
                     if deleteTask == individualTask:
-                        check = input(f"Are you sure you want to delete {individualTask}? y/n: ").lower()
+                        check = input(f"Are you sure you want to delete {task.getName}? y/n: ").lower()
                         if(check == "y" or check == "yes"):
                             self._tasks.remove(task)
-                            print(f"Task {individualTask} is deleted!")
+                            print(f"Task {task.getName} is deleted!")
 
                         elif(check == "n" or check == "no"):
-                            print(f"Task {individualTask} is not deleted. Canceling operation!")
+                            print(f"Task {task.getName} is not deleted. Canceling operation!")
 
                         else:
                             print("Not a valid input. Try again.")
@@ -100,7 +104,28 @@ class userInterface:
 
 
     def editTasks(self):
-        pass    
+
+        editTask = input("Which task would you like to edit?: ").lower().replace(" ", "")
+
+        editOption = input("What would you like to edit?\n"
+                     "1. Name of task\n" \
+                     "2. Description of task\n" \
+                     "3. Status of completion for task\n" \
+                     "Input choice here: ")
+
+        match editOption:
+            case "1": #changing name of task
+                for task in self._tasks:
+                    editedTask = task.getName.lower().replace(" ", "")
+                    if editTask == task.getName:
+                        pass
+                newName = input("Insert new task name: ")
+
+            case "2": #changing description of task
+                pass
+            case "3": #changing status of completion for task
+                pass
+
 
     
 
