@@ -17,7 +17,6 @@ class userInterface:
             "5. Print Tasks\n" \
             "6. Quit app\n")
             self.choice(choice)
-            print("=============================================================================")
 
     def choice(self, choice):
         match choice:
@@ -44,7 +43,7 @@ class userInterface:
             self.addTasks(newTask)
             
         except ValueError as e:
-            print("Error:", e)
+            print("ERROR:", e)
 
     def addTasks(self, task):
         self._tasks.append(task)
@@ -53,12 +52,13 @@ class userInterface:
         if len(self._tasks) == 0:
             print("No current tasks")
         else:
+            print("*******************Tasks***********************")
             for task in self._tasks:
                 print(task.printTask())
+            print("***********************************************")
 
     def completeTask(self):
-        completedTask = input("Type name of task that is completed: ")
-        completedTask = completedTask.lower()
+        completedTask = input("Type name of task that is completed: ").lower()
         completedTask = completedTask.replace(" ", "")
         print(completedTask)
 
@@ -69,7 +69,35 @@ class userInterface:
                 task.setPrintTask() #flips switch that marks task as completed
 
     def deleteTasks(self):
-        pass
+        try:
+            deleteTask = input("What task do you want to delete?: ").lower()
+            deleteTask = deleteTask.replace(" ", "")
+
+            for task in self._tasks:
+                if task in self._tasks:
+                    individualTask = task.getName.lower()
+                    individualTask = individualTask.replace(" ", "")
+
+                    if deleteTask == individualTask:
+                        check = input(f"Are you sure you want to delete {individualTask}? y/n: ").lower()
+                        if(check == "y" or check == "yes"):
+                            self._tasks.remove(task)
+                            print(f"Task {individualTask} is deleted!")
+
+                        elif(check == "n" or check == "no"):
+                            print(f"Task {individualTask} is not deleted. Canceling operation!")
+
+                        else:
+                            print("Not a valid input. Try again.")
+                            break
+
+                else:
+                    raise ValueError("Task not found.")
+                
+        except ValueError as e:
+            print("ERROR:", e)
+
+
 
     def editTasks(self):
         pass    
