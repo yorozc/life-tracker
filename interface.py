@@ -74,28 +74,20 @@ class userInterface:
 
     def deleteTasks(self):
         try:
-            deleteTask = input("What task do you want to delete?: ").lower()
-            deleteTask = deleteTask.replace(" ", "")
+            deleteTask = input("What task do you want to delete?: ").lower().replace(" ", "")
 
-            for task in self._tasks:
-                if task in self._tasks:
-                    individualTask = task.getName.lower()
-                    individualTask = individualTask.replace(" ", "")
+            res, task = self.findTask(deleteTask)
+            if res:
+                check = input(f"Are you sure you want to delete {task.getName}? y/n: ").lower()
+                if(check == "y" or check == "yes"):
+                    self._tasks.remove(task)
+                    print(f"Task {task.getName} is deleted!")
 
-                    if deleteTask == individualTask:
-                        check = input(f"Are you sure you want to delete {task.getName}? y/n: ").lower()
-                        if(check == "y" or check == "yes"):
-                            self._tasks.remove(task)
-                            print(f"Task {task.getName} is deleted!")
-
-                        elif(check == "n" or check == "no"):
-                            print(f"Task {task.getName} is not deleted. Canceling operation!")
-
-                        else:
-                            print("Not a valid input. Try again.")
-                            break
+                elif(check == "n" or check == "no"):
+                    print(f"Task {task.getName} is not deleted. Canceling operation!")
 
                 else:
+                    print("Not a valid input. Try again.")
                     raise ValueError("Task not found.")
                 
         except ValueError as e:
