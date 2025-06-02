@@ -57,8 +57,9 @@ class userInterface:
                 print(task.printTask())
             print("***********************************************")
 
-    def findTask(self, taskToFind):
+    def findTask(self, taskToFind: str):
         taskToReturn = None
+        taskToFind = taskToFind.lower().replace(" ", "")
         for task in self._tasks:
             newTask = task.getName.lower().replace(" ", "")
             if taskToFind == newTask:
@@ -66,7 +67,7 @@ class userInterface:
                 return True, taskToReturn
 
     def completeTask(self):
-        completedTask = input("Type name of task that is completed: ").lower().replace(" ", "")
+        completedTask = input("Type name of task that is completed: ")
 
         res, task = self.findTask(completedTask)
         if res:
@@ -74,7 +75,7 @@ class userInterface:
 
     def deleteTasks(self):
         try:
-            deleteTask = input("What task do you want to delete?: ").lower().replace(" ", "")
+            deleteTask = input("What task do you want to delete?: ")
 
             res, task = self.findTask(deleteTask)
             if res:
@@ -97,7 +98,7 @@ class userInterface:
 
     def editTasks(self):
 
-        editTask = input("Which task would you like to edit?: ").lower().replace(" ", "")
+        editTask = input("Which task would you like to edit?: ")
 
         editOption = input("What would you like to edit?\n"
                      "1. Name of task\n" \
@@ -107,6 +108,7 @@ class userInterface:
 
         match editOption:
             case "1": #changing name of task
+                res, task = self.findTask(editTask)
                 for task in self._tasks:
                     editedTask = task.getName.lower().replace(" ", "")
                     if editTask == task.getName:
