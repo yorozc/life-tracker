@@ -14,28 +14,24 @@ class Task:
         return f"Task name: {self._name}, Description: {self._desc}, Completion status: {self._checked}, added: {self._date}"    
 
     @property
-    def getName(self): #getter
+    def name(self): #getter
         return self._name
     
-    @getName.setter
-    def setName(self, name):
+    @name.setter
+    def name(self, name):
         self._name = name
 
     @property
-    def getDesc(self): 
+    def desc(self): 
         return self._desc
 
-    @getDesc.setter
-    def setDesc(self, desc):
+    @desc.setter
+    def desc(self, desc):
         self._desc = desc
     
     @property
     def getChecked(self):
         return self._checked
-
-    @getChecked.setter
-    def setCheched(self, checked):
-        self._checked = checked
 
     @property
     def getDate(self):

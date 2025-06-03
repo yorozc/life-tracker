@@ -58,13 +58,13 @@ class userInterface:
             print("***********************************************")
 
     def findTask(self, taskToFind: str):
-        taskToReturn = None
         taskToFind = taskToFind.lower().replace(" ", "")
         for task in self._tasks:
-            newTask = task.getName.lower().replace(" ", "")
+            newTask = task.name.lower().replace(" ", "")
             if taskToFind == newTask:
-                taskToReturn = task
-                return True, taskToReturn
+                return True, task
+            else:
+                raise ValueError("Task not found.")
 
     def completeTask(self):
         completedTask = input("Type name of task that is completed: ")
@@ -79,13 +79,13 @@ class userInterface:
 
             res, task = self.findTask(deleteTask)
             if res:
-                check = input(f"Are you sure you want to delete {task.getName}? y/n: ").lower()
+                check = input(f"Are you sure you want to delete {task.name}? y/n: ").lower()
                 if(check == "y" or check == "yes"):
                     self._tasks.remove(task)
-                    print(f"Task {task.getName} is deleted!")
+                    print(f"Task {task.name} is deleted!")
 
                 elif(check == "n" or check == "no"):
-                    print(f"Task {task.getName} is not deleted. Canceling operation!")
+                    print(f"Task {task.name} is not deleted. Canceling operation!")
 
                 else:
                     print("Not a valid input. Try again.")
@@ -93,8 +93,6 @@ class userInterface:
                 
         except ValueError as e:
             print("ERROR:", e)
-
-
 
     def editTasks(self):
 
@@ -109,11 +107,9 @@ class userInterface:
         match editOption:
             case "1": #changing name of task
                 res, task = self.findTask(editTask)
-                for task in self._tasks:
-                    editedTask = task.getName.lower().replace(" ", "")
-                    if editTask == task.getName:
-                        pass
-                newName = input("Insert new task name: ")
+                if res:
+                    newName = input("Insert new task name: ")
+                    task.name = newName
 
             case "2": #changing description of task
                 pass
