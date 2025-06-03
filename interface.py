@@ -15,7 +15,8 @@ class userInterface:
             "3. Edit Task\n" \
             "4. Complete Task\n" \
             "5. Print Tasks\n" \
-            "6. Quit app\n")
+            "6. Quit app\n" \
+            "Input choice here: ")
             self.choice(choice)
 
     def choice(self, choice):
@@ -103,18 +104,23 @@ class userInterface:
                      "2. Description of task\n" \
                      "3. Status of completion for task\n" \
                      "Input choice here: ")
+        
+        res, task = self.findTask(editTask)
 
         match editOption:
             case "1": #changing name of task
-                res, task = self.findTask(editTask)
                 if res:
                     newName = input("Insert new task name: ")
                     task.name = newName
 
             case "2": #changing description of task
-                pass
+                if res:
+                    newDesc = input("Insert new description: ")
+                    task.desc = newDesc
+                    
             case "3": #changing status of completion for task
-                pass
+                if res:
+                    task.setPrintTask()
 
 
     

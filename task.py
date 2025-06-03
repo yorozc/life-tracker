@@ -44,6 +44,8 @@ class Task:
             return f"[] {self._name} {self._date}"
     
     def setPrintTask(self):
-        self._checked = True
-        
+        if self._checked == False:
+            self._checked = True
+        else:
+            self._checked = False
     
