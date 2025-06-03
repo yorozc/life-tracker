@@ -58,7 +58,13 @@ class userInterface:
                 print(task.printTask())
             print("***********************************************")
 
+    def emptyTasks(self):
+        if len(self._tasks) == 0:
+            raise ValueError("No tasks found.")
+
     def findTask(self, taskToFind: str):
+        self.emptyTasks()
+        
         taskToFind = taskToFind.lower().replace(" ", "")
         for task in self._tasks:
             newTask = task.name.lower().replace(" ", "")
@@ -66,16 +72,20 @@ class userInterface:
                 return True, task
             else:
                 raise ValueError("Task not found.")
+            
 
     def completeTask(self):
+        self.emptyTasks()
+        
         completedTask = input("Type name of task that is completed: ")
-
         res, task = self.findTask(completedTask)
         if res:
             task.setPrintTask()
 
     def deleteTasks(self):
         try:
+            self.emptyTasks
+
             deleteTask = input("What task do you want to delete?: ")
 
             res, task = self.findTask(deleteTask)
@@ -89,38 +99,50 @@ class userInterface:
                     print(f"Task {task.name} is not deleted. Canceling operation!")
 
                 else:
-                    print("Not a valid input. Try again.")
-                    raise ValueError("Task not found.")
+                    #print("Not a valid input. Try again.")
+                    raise ValueError("Invalid input. Try again.")
                 
         except ValueError as e:
             print("ERROR:", e)
 
     def editTasks(self):
+        try:
+            self.emptyTasks()
+            
+            editTask = input("Which task would you like to edit?: ")
+            if not editTask:
+                raise ValueError("Input cannot be empty.")
 
-        editTask = input("Which task would you like to edit?: ")
+            editOption = input("What would you like to edit?\n"
+                        "1. Name of task\n" \
+                        "2. Description of task\n" \
+                        "3. Status of completion for task\n" \
+                        "Input choice here: ")
+            if not editOption:
+                raise ValueError("Option cannot be empty")
+            
+            res, task = self.findTask(editTask)
 
-        editOption = input("What would you like to edit?\n"
-                     "1. Name of task\n" \
-                     "2. Description of task\n" \
-                     "3. Status of completion for task\n" \
-                     "Input choice here: ")
-        
-        res, task = self.findTask(editTask)
+            match editOption:
+                case "1": #changing name of task
+                    if res:
+                        newName = input("Insert new task name: ")
+                        task.name = newName
 
-        match editOption:
-            case "1": #changing name of task
-                if res:
-                    newName = input("Insert new task name: ")
-                    task.name = newName
+                case "2": #changing description of task
+                    if res:
+                        newDesc = input("Insert new description: ")
+                        task.desc = newDesc
 
-            case "2": #changing description of task
-                if res:
-                    newDesc = input("Insert new description: ")
-                    task.desc = newDesc
-                    
-            case "3": #changing status of completion for task
-                if res:
-                    task.setPrintTask()
+                case "3": #changing status of completion for task
+                    if res:
+                        task.setPrintTask()
+                
+                case _:
+                    raise ValueError("Not a valid option. Try again.")
+
+        except ValueError as e:
+            print("ERROR:", e)
 
 
     
