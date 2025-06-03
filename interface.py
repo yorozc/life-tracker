@@ -51,7 +51,7 @@ class userInterface:
 
     def printTasks(self):
         if len(self._tasks) == 0:
-            print("No current tasks")
+            print("No tasks.")
         else:
             print("*******************Tasks***********************")
             for task in self._tasks:
@@ -63,8 +63,6 @@ class userInterface:
             raise ValueError("No tasks found.")
 
     def findTask(self, taskToFind: str):
-        self.emptyTasks()
-        
         taskToFind = taskToFind.lower().replace(" ", "")
         for task in self._tasks:
             newTask = task.name.lower().replace(" ", "")
@@ -75,16 +73,20 @@ class userInterface:
             
 
     def completeTask(self):
-        self.emptyTasks()
-        
-        completedTask = input("Type name of task that is completed: ")
-        res, task = self.findTask(completedTask)
-        if res:
-            task.setPrintTask()
+        try:
+            self.emptyTasks()
+            
+            completedTask = input("Type name of task that is completed: ")
+            res, task = self.findTask(completedTask)
+            if res:
+                task.setPrintTask()
+    
+        except ValueError as e:
+            print("ERROR:", e)
 
     def deleteTasks(self):
         try:
-            self.emptyTasks
+            self.emptyTasks()
 
             deleteTask = input("What task do you want to delete?: ")
 
@@ -110,8 +112,8 @@ class userInterface:
             self.emptyTasks()
             
             editTask = input("Which task would you like to edit?: ")
-            if not editTask:
-                raise ValueError("Input cannot be empty.")
+
+            res, task = self.findTask(editTask)
 
             editOption = input("What would you like to edit?\n"
                         "1. Name of task\n" \
@@ -121,18 +123,22 @@ class userInterface:
             if not editOption:
                 raise ValueError("Option cannot be empty")
             
-            res, task = self.findTask(editTask)
-
             match editOption:
                 case "1": #changing name of task
                     if res:
                         newName = input("Insert new task name: ")
-                        task.name = newName
+                        if not newName:
+                            raise ValueError("Input cannot be empty.")
+                        else:
+                            task.name = newName
 
                 case "2": #changing description of task
                     if res:
                         newDesc = input("Insert new description: ")
-                        task.desc = newDesc
+                        if not newDesc:
+                            raise ValueError("Input cannot be empty.")
+                        else:
+                            task.desc = newDesc
 
                 case "3": #changing status of completion for task
                     if res:
