@@ -4,7 +4,7 @@ import uuid
 class Task:
 
     def __init__(self, name, desc=""):
-        self.id = uuid.uuid4()
+        self.id = int(uuid.uuid4())
         self._name = name
         self._desc = desc
         self._checked = False
@@ -13,6 +13,9 @@ class Task:
     def __repr__(self):
         return f"Task name: {self._name}, Description: {self._desc}, Completion status: {self._checked}, added: {self._date}"    
 
+    def getID(self):
+        return self.id
+    
     @property
     def name(self): #getter
         return self._name

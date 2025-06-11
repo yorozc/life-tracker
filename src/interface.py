@@ -1,4 +1,6 @@
 from task import Task
+from queries import CREATE_TASK_TABLE, INSERT_TASK, GET_ALL_TASKS
+import sqlite3
 
 class userInterface:
     
@@ -41,7 +43,13 @@ class userInterface:
                 raise ValueError("Name cannot be empty")
             description = input("(Optional) Please input description: ")
             newTask = Task(name, description)
-            self.addTasks(newTask)
+            #self.addTasks(newTask) #replace with sql query
+            conn = sqlite3.connect("src/tasks.db")
+            cursor = conn.cursor()
+            cursor.execute(CREATE_TASK_TABLE)
+            cursor.execute(INSERT_TASK, (newTask.name, newTask.desc, newTask.getChecked, newTask.getDate))
+            conn.commit()
+            conn.close()
             
         except ValueError as e:
             print("ERROR:", e)
@@ -50,13 +58,17 @@ class userInterface:
         self._tasks.append(task)
 
     def printTasks(self):
-        if len(self._tasks) == 0:
-            print("No tasks.")
-        else:
-            print("*******************Tasks***********************")
-            for task in self._tasks:
-                print(task.printTask())
-            print("***********************************************")
+    
+        print("*******************Tasks***********************")
+        #for task in self._tasks:
+        #    print(task.printTask())
+        conn = sqlite3.connect("src/tasks.db")
+        cursor = conn.cursor()
+        cursor.execute(GET_ALL_TASKS)
+        tasks = cursor.fetchall()
+        print(tasks)
+        conn.close()
+        print("***********************************************")
 
     def emptyTasks(self):
         if len(self._tasks) == 0:
