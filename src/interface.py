@@ -43,10 +43,9 @@ class userInterface:
                 raise ValueError("Name cannot be empty")
             description = input("(Optional) Please input description: ")
             newTask = Task(name, description)
-            #self.addTasks(newTask) #replace with sql query
             conn = sqlite3.connect("src/tasks.db")
             cursor = conn.cursor()
-            cursor.execute(CREATE_TASK_TABLE)
+            cursor.execute(CREATE_TASK_TABLE) #creates table if it doesnt exist
             cursor.execute(INSERT_TASK, (newTask.name, newTask.desc, newTask.getChecked, newTask.getDate))
             conn.commit()
             conn.close()
@@ -54,14 +53,9 @@ class userInterface:
         except ValueError as e:
             print("ERROR:", e)
 
-    def addTasks(self, task):
-        self._tasks.append(task)
-
     def printTasks(self):
     
         print("*******************Tasks***********************")
-        #for task in self._tasks:
-        #    print(task.printTask())
         conn = sqlite3.connect("src/tasks.db")
         cursor = conn.cursor()
         cursor.execute(GET_ALL_TASKS)
@@ -71,10 +65,6 @@ class userInterface:
         
         conn.close()
         print("***********************************************")
-
-    def emptyTasks(self):
-        if len(self._tasks) == 0:
-            raise ValueError("No tasks found.")
 
     def findTask(self, taskToFind: str):
         taskToFind = taskToFind.lower().replace(" ", "")
@@ -88,7 +78,6 @@ class userInterface:
 
     def completeTask(self):
         try:
-            self.emptyTasks()
             
             completedTask = input("Type name of task that is completed: ")
             res, task = self.findTask(completedTask)
@@ -100,7 +89,6 @@ class userInterface:
 
     def deleteTasks(self):
         try:
-            self.emptyTasks()
 
             deleteTask = input("What task do you want to delete?: ")
 
@@ -123,7 +111,6 @@ class userInterface:
 
     def editTasks(self):
         try:
-            self.emptyTasks()
             
             editTask = input("Which task would you like to edit?: ")
 
