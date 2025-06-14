@@ -65,8 +65,10 @@ class userInterface:
         conn = sqlite3.connect("src/tasks.db")
         cursor = conn.cursor()
         cursor.execute(GET_ALL_TASKS)
-        tasks = cursor.fetchall()
-        print(tasks)
+        tasks = cursor.fetchall() #tuple with info
+        for i in range(len(tasks)):
+            print("[] " + tasks[i][0] + " " + tasks[i][1] + " " + tasks[i][3])
+        
         conn.close()
         print("***********************************************")
 
