@@ -39,6 +39,7 @@ class userInterface:
     def createTask(self):
         try:
             name = input("Please input name of task: ")
+            name = name.lower().replace(" ", "")
             if not name:
                 raise ValueError("Name cannot be empty")
             description = input("(Optional) Please input description: ")
@@ -54,19 +55,26 @@ class userInterface:
             print("ERROR:", e)
 
     def printTasks(self):
-    
-        print("*******************Tasks***********************")
-        conn = sqlite3.connect("src/tasks.db")
-        cursor = conn.cursor()
-        cursor.execute(GET_ALL_TASKS)
-        tasks = cursor.fetchall() #tuple with info
-        for i in range(len(tasks)):
-            print("[] " + tasks[i][0] + " " + tasks[i][1] + " " + tasks[i][3])
-        
-        conn.close()
-        print("***********************************************")
+        try:
+            print("*******************Tasks***********************")
+            conn = sqlite3.connect("src/tasks.db")
+            cursor = conn.cursor()
+            cursor.execute(GET_ALL_TASKS)
+            tasks = cursor.fetchall() #tuple with info
+            for i in range(len(tasks)):
+                if tasks[i][2] == 1:
+                    print("[x] " + tasks[i][0] + " " + tasks[i][1] + " " + tasks[i][3])
+                elif tasks[i][2] == 0:
+                    print("[] " + tasks[i][0] + " " + tasks[i][1] + " " + tasks[i][3])
+            
+            conn.close()
+            print("***********************************************")
+
+        except ValueError as e:
+            print("ERROR:", e)
 
     def findTask(self, taskToFind: str):
+        '''
         taskToFind = taskToFind.lower().replace(" ", "")
         for task in self._tasks:
             newTask = task.name.lower().replace(" ", "")
@@ -74,15 +82,35 @@ class userInterface:
                 return True, task
             else:
                 raise ValueError("Task not found.")
-            
+        '''
+        taskToFind = taskToFind.lower().replace(" ", "")
+        conn = sqlite3.connect("src/tasks.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM tasks WHERE taskName LIKE ? COLLATE NOCASE", ("%" + taskToFind + "%",))
+        found = cursor.fetchone()
+        if len(found) == 0:
+            raise ValueError("Task not found.")
+        else:
+            return True, found
+        
+    def flipCheck(self, check: int) -> int:
+        if check == 1:
+            check = 0
+        elif check == 0:
+            check = 1
 
+        return check
+    
     def completeTask(self):
         try:
-            
             completedTask = input("Type name of task that is completed: ")
             res, task = self.findTask(completedTask)
             if res:
-                task.setPrintTask()
+                conn = sqlite3.connect("src/tasks.db")
+                cursor = conn.cursor()
+                cursor.execute("UPDATE tasks SET checked = ? WHERE taskName = ?", (self.flipCheck(task[2]), task[0]))
+            conn.commit()
+            conn.close()
     
         except ValueError as e:
             print("ERROR:", e)
